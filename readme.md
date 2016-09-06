@@ -6,7 +6,7 @@ The command line nodes are executed on a remote server using ssh. The framework 
 
 In addition to executing the command line tools on a remote server, the nodes can also generate the UNIX csh script to execute the same sequence of tools as a UNIX pipe. The result is that KNIME can be used to develop and debug complex UNIX pipes. Once the pipes have been tested and validated, a light-weight execution is possible by simply extracting the c-shell syntax from the terminal command line node in KNIME and incorporating it into a UNIX csh shell script.
 
-We recommend that before installing the [chemalot\_knime](??) package, you install the [chemalot](??) command line tools on your UNIX server and make sure they are working and included in your default path.
+We recommend that before installing the chemalot\_knime package, you install the [chemalot](https://github.com/chemalot/chemalot/) command line tools on your UNIX server and make sure they are working and included in your default path.
 
 The configuration file (`<chemalot_knime_dir>`/config/cmdLine/commandLinePrograms.xml) in this package has entries predefined for all of the chemalot command line tools. The KNIME nodes for those will be auto generated but the nodes will only work if the command line tools themselves are in the user's path on the remote host.
 
@@ -41,7 +41,7 @@ Make sure you have the following modules installed:
 
 Installation of the chemalot\_knime package:
 
-* Download and unpack the newest chemalot\_knime_Install.*.zip file from the [chemalot\_knime GitHub page](??) onto your hard drive.
+* Download and unpack the newest chemalot\_knime_Install.*.zip file from the [chemalot\_knime GitHub page](https://github.com/chemalot/chemalot_knime) onto your hard drive.
 * Unzip the contents into your preferred program directory. In the rest of this documentation, this unzipped directory will be denoted `<chemalot_knime_dir>`.
 * Edit `<KNIME_INSTALL_DIR>`/knime.ini:
    * append the following two lines:

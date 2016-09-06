@@ -11,7 +11,7 @@ Installing the KNIME SDK
 * Download KNIME SDK from: https://www.knime.org/downloads/overview. This document was written and tested using the 3.2.0 version of the KNIME SDK.
    * Install into `<KNIMESDK_DIR>` 
 
-* Checkout [chemalot-KNIME](??) to: `<chemalotSDK_knime_dir>`
+* Checkout [chemalot-KNIME](https://github.com/chemalot/chemalot_knime) to: `<chemalotSDK_knime_dir>`
 
   
 * Start `<KNIMESDK_DIR>`/eclipse.exe and select a workspace
@@ -39,7 +39,7 @@ Installing the KNIME SDK
 
   * Edit the 
      `<chemalotSDK_knime_dir>`/config/dev.properties and `<chemalotSDK_knime_dir>`/config/cmdLine/commandLinePrograms.xml  
-     files as described in the [readme](readme.html) file for the installation of the nodes in a working KNIME desktop.
+     files as described in the [readme](readme.md) file for the installation of the nodes in a working KNIME desktop.
 
   * Create a new KNIME Runtime Configuration
      
