@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.genentech.knime.feature"
+      label="Genentech Knime Features"
+      version="1.0.42"
+      provider-name="GENENTECH">
+
+   <description url="http://www.gene.com/">
+      Genentech Knime Nodes Feature
+   </description>
+
+   <copyright url="http://www.gene.com/">
+      Copyright Genentech 2016
+   </copyright>
+
+   <url>
+      <update label="Genentech Knime Nodes" url="http:cServer.com///Aestel/public/files/knimeCfg/update/"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.knime.workbench.core"/>
+      <import plugin="org.knime.workbench.repository"/>
+      <import plugin="org.knime.base"/>
+      <import plugin="org.knime.ext.ssh" version="2.6.0" match="greaterOrEqual"/>
+      <import plugin="com.jcraft.jsch" version="0.1.41" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.p2.ui" version="2.1.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.p2.core" version="2.1.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.p2.operations" version="2.1.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jsch.core" version="1.1.200" match="greaterOrEqual"/>
+      <import plugin="org.knime.chem.base" version="3.2.0" match="greaterOrEqual"/>
+      <import plugin="org.knime.chem.types" version="3.0.0" match="greaterOrEqual"/>
+      <import plugin="JDOM" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="JDOM"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.genentech.knime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>

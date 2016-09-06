@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="../../icons/dna3.png" type="Manipulator">
+    <name>Knime To SDF Port</name>
+    
+    <shortDescription>
+        Convert Knime input to SDF Command Line port.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>The data on the input port is made available for remote 
+               execution via the SDF command line nodes.</intro>
+        <option name="Field containing molecule data">
+            Field in input table that contains the molecule data which will be
+            used to generate the molblocks of the sdf file.</option>
+        <option name="Local Exchange Directory">
+            Path from local host to network directory which is accessible from 
+            both: the local computer running Knime as well as the remote computer 
+            on which the SDF Commands will be executed.
+        </option>
+        <option name="Remote Exchange Directory">
+            Path from remote host to network directory which is accessible from 
+            both: the local computer running Knime as well as the remote computer 
+            on which the SDF Commands will be executed.
+        </option>
+        <option name="SSH Tab">
+           <p>Options for configuring the remote execution via ssh.</p>
+           
+           <p>These options will affect all nodes connected via the command line 
+           pipe following the first generator node.</p>
+        </option>
+        <option name="Pipe Mode">
+           Decides if environment variables for production or development mode 
+           are loaded prior to remote command execution.
+        </option>
+        <option name="Remote Directory">
+           Directory on remote host in which the ssh execution will take place.
+        </option>
+        <option name="Error Log File">
+           <p>If specified the stderr of this command is written to this local file.
+              Specify a full path. Values of flow variable can be inserted using ${varName}.
+              This is especially useful on the server.</p>
+        </option>
+        <option name="Execute in each node">
+           <p>If checked each node directly connected to via a command line pipe
+           will be executed separately on node execution. A copy of the output 
+           data and stderror will be available on the output port and the node 
+           view. This is slow but ideal for debugging a pipe.</p>
+           <p>If unchecked no execution takes place on each connected command node. 
+           Instead you may use an Executer node (cf. consumer folder) to execute 
+           the pipe as a whole. The unix command to execute the pipe is available 
+           in each output port view.</p>
+        </option>
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="In-Port name 0">Knime port containing molecule field</inPort>
+        <!-- possibly more input ports here-->
+        <outPort index="0" name="SDF">Data from input port available on remote host</outPort>
+        <!-- possibly more output ports here-->
+    </ports>
+    <views>
+        <view index="0" name="Command Error Output">Error output if single node execution is activated.</view>
+    </views>  
+</knimeNode>

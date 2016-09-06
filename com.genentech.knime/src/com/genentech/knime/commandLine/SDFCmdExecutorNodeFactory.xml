@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="../../icons/dna3.png" type="Other">
+    <name>SDF Port To KNIME</name>
+    
+    <shortDescription>
+        Convert SDF Command Line port To KNIME.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>Execute SDF Command Line pipe and make output available as Knime table.
+               The unix pipe string is also placed in a flow variable.
+        </intro>
+        
+        <option name="Unix command variable">Name of flow variable to contain the unix pipe string.</option>
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="SDF command port">SDF command port</inPort>
+        <outPort index="0" name="Knime Port">Containing sdf records from execution</outPort>
+    </ports>    
+    <views>
+        <view index="0" name="Command Error Output">Error output from remote execution</view>
+    </views>
+</knimeNode>

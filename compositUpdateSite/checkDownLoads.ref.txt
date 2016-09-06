@@ -1,0 +1,8 @@
+community/artifacts.jar
+community/content.jar
+knime.com/artifacts.jar
+knime.com/content.jar
+knime.org/compositeArtifacts.xml
+knime.org/compositeContent.xml
+trustedCommunity/artifacts.jar
+trustedCommunity/content.jar

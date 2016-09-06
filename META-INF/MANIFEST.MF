@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JDOM
+Bundle-SymbolicName: JDOM
+Bundle-Version: 1.0.0
+Bundle-ClassPath: jdom.jar
+Export-Package: org.jdom,
+ org.jdom.adapters,
+ org.jdom.filter,
+ org.jdom.input,
+ org.jdom.output,
+ org.jdom.transform,
+ org.jdom.xpath
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

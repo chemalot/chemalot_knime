@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="Genentech Knime Nodes" url="http://myPublicServer.com/Aestel/public/files/knimeUpd/">
+      Genentech Knime Nodes:
+   </description>
+   <feature url="features/com.genentech.knime.feature_1.0.42.jar" id="com.genentech.knime.feature" version="1.0.42">
+      <category name="gCategory"/>
+   </feature>
+   <category-def name="gCategory" label="Genentech"/>
+</site>

@@ -1,0 +1,36 @@
+Deployment of the chemalot_knime nodes is done via an update site.
+To add a new processor or generator node only the 
+   config\cmdLine\commandLinePrograms.xml
+
+Follow this steps to release a change to the source code.
+- in eclipse 
+   - make and test the changes
+   - open from package explorer: com.genentech.knime/plugin.xml
+      - in the Overview tab: increment the Version
+      - save
+   - open from package explorer: com.genentech.feature/feature.xml
+      - in Overview tab: enter same version number as in com.genentech.knime/plugin.xml
+      - in the Dependencies tab: check "Recompute when features plugins change"
+      -                          click compute
+      - save
+   - open: knimeGenes/site.xml
+      - in "Site Map" tab: 
+         - click on gCategory in tree
+         - click "Add feature..."
+         - The new version should show up at the top 
+             e.g. "com.genentech.knime.feature(1.0.6)"
+         - double click the new com.genentech.knime.feature
+         - in the tree, right-click the previous jar, e.g. "features/com.genentech.knime.features_1.0.5.jar"
+         - select remove
+         - save
+         - click "build all" icon (small on top right of the window)
+- in git
+   - navigate to <package>/updateSite\features
+      - windows remove older versions of com.genentech.knime.feature_*.jar
+      - add newest version to svn
+   - navigate to updateSite\plugins
+      - windows remove older versions of com.genentech.knime_*.jar
+      - add newest version to svn
+   - commit changes to updateSite subdirectory including deleted files
+   - check out changes on your update site
+

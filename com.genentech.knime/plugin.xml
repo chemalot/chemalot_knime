@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+   <!-- This is an example for providing an own category 
+      <extension
+         point="org.knime.workbench.repository.categories">
+      <category
+            description="Category containing my nodes"
+            icon="icons/default.png"
+            level-id="myNodes"
+            name="My nodes"
+            path="/"/>
+   </extension>
+   -->
+   
+   <extension point="org.knime.workbench.repository.nodes">
+
+       <node category-path="/Genentech" factory-class="com.genentech.knime.ssh.TABSSHNodeFactory"/>
+             
+       <node category-path="/Genentech" factory-class="com.genentech.knime.ssh.SDFSSHNodeFactory"/>
+
+       <node category-path="/Genentech/GNESdfCmdLine/GNEConverter" 
+             factory-class="com.genentech.knime.commandLine.KnimeSDFCMDBridgeNodeFactory"/>
+
+       <node category-path="/Genentech/GNESdfCmdLine/GNEDataManipulation" 
+             factory-class="com.genentech.knime.commandLine.SDFConcatenateNodeFactory"/>
+
+       <node category-path="/Genentech/GNESdfCmdLine/GNEConverter" 
+             factory-class="com.genentech.knime.commandLine.SDFCmdExecutorNodeFactory"/>
+
+       <node category-path="/Genentech/GNESdfCmdLine/GNEWriter" 
+             factory-class="com.genentech.knime.commandLine.SDFCmdRemoteWriterNodeFactory"/>
+       <node
+             category-path="Genentech"
+             factory-class="com.genentech.knime.settings.GNESettingsNodeFactory">
+       </node>
+
+   </extension>
+
+   <extension
+         point="org.knime.workbench.repository.nodesets">
+      <nodeset
+            factory-class="com.genentech.knime.dynamicNode.generator.GeneratorCmdSdfNodeSetFactory">
+      </nodeset>
+      <nodeset
+            factory-class="com.genentech.knime.dynamicNode.processor.ProcessorCmdSdfNodeSetFactory">
+      </nodeset>
+      <nodeset
+            factory-class="com.genentech.knime.dynamicNode.consumer.ConsumerCmdSdfNodeSetFactory">
+      </nodeset>
+   </extension>
+
+   <extension point="org.knime.workbench.repository.categories">
+      <category
+            icon="/icons/dna3.png"
+            level-id="Genentech"
+            name="Genentech"
+            path="/"/>
+
+      <category icon="/icons/dna3.png"
+         level-id="GNESdfCmdLine" name="SDF command Line Tools" path="/Genentech"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEAdvanced" name="Advanced" path="/Genentech/GNESdfCmdLine"/>
+
+              <category icon="/icons/dna3.png"
+                 level-id="GNEAdvDataManipulation"   name="Data Manipulation"      path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+         
+              <category icon="/icons/dna3.png"
+                 level-id="GNEAdvReader"             name="Reader"                 path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+         
+              <category icon="/icons/dna3.png"
+                 level-id="GNEAdvStructManipulation" name="Structure Manipulation" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+         
+                  <category icon="/icons/dna3.png"
+                     level-id="GNEAdvProps"          name="Properties" path="/Genentech/GNESdfCmdLine/GNEAdvanced/GNEAdvStructManipulation"/>
+         
+              <category icon="/icons/dna3.png"
+                 level-id="GNEAdvUtilities"          name="Utilities" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+         
+              <category icon="/icons/dna3.png"
+                 level-id="GNEAdvWriter"             name="Writer" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+         
+              <category icon="/icons/dna3.png"
+                 level-id="GNERetired"               name="Retired" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+         
+          <category icon="/icons/dna3.png"
+             level-id="GNEConverter" name="Converter" path="/Genentech/GNESdfCmdLine"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEDataManipulation" name="Data Manipulation" path="/Genentech/GNESdfCmdLine"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEReader" name="Reader" path="/Genentech/GNESdfCmdLine"/>
+         
+          <category icon="/icons/dna3.png"
+             level-id="GNEStructManipulation" name="Structure Manipulation" path="/Genentech/GNESdfCmdLine"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEStrDiversity" name="Diversity"  path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEStrProps"     name="Properties" path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEStrQSAR" name="QSAR Modeling" path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEStrSearch" name="Search Tools" path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEUtilities" name="Utilities" path="/Genentech/GNESdfCmdLine"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEWriter" name="Writer" path="/Genentech/GNESdfCmdLine"/>
+
+          <category icon="/icons/dna3.png"
+             level-id="GNEUserDefined" name="User Defined" path="/Genentech/GNESdfCmdLine"/>
+
+   </extension>
+   <extension
+         point="org.knime.core.PortType">
+      <portType
+            color="FFFF00"
+            hidden="false"
+            name="GNE SDF Port"
+            objectClass="com.genentech.knime.commandLine.SDFCmdPortObject"
+            objectSerializer="com.genentech.knime.commandLine.SDFCmdPortObject$Serializer"
+            specClass="com.genentech.knime.commandLine.SDFCmdPortObjectSpec"
+            specSerializer="com.genentech.knime.commandLine.SDFCmdPortObjectSpec$Serializer">
+      </portType>
+   </extension>
+</plugin>

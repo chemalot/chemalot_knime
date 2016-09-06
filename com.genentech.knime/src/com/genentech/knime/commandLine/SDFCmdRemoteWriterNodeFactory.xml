@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="../../icons/dna3.png" type="Other">
+    <name>Remote SDF Writer</name>
+    
+    <shortDescription>
+        Writes the content to a file on the ssh server.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>Execute SDF Command Line pipe and save output to remote file.
+               The unix pipe string is also placed in a flow variable.
+        </intro>
+        
+        <option name="Remote Filename">Filename into which to write command output on remote host relative to working directory.</option>
+        <option name="Unix command variable">Name of flow variable to contain the unix pipe string.</option>
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="SDF command port">SDF command port</inPort>
+        <outPort index="0" name="KNIME Port">Containing sdf records from execution</outPort>
+    </ports>    
+    <views>
+        <view index="0" name="Unix Command Line">Unix Command Line</view>
+        <view index="1" name="Command Error Output">Error output from remote execution</view>
+    </views>
+</knimeNode>
