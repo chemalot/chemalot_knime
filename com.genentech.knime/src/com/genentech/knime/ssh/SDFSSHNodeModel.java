@@ -55,7 +55,7 @@ import org.knime.core.node.util.filter.column.DataColumnSpecFilterConfiguration;
  */
 
 public class SDFSSHNodeModel extends AbstractSSHNodeModel {
-
+	
    /**
     * Overwrite if TabSSHToolSettings ins not appropriate.
     */
@@ -82,6 +82,7 @@ public class SDFSSHNodeModel extends AbstractSSHNodeModel {
       
       SDFReaderSettings rSettings = new SDFReaderSettings();
       rSettings.extractSDF(true);
+      rSettings.extractAllProperties(true);
       ArrayList<URL> iFiles = new ArrayList<URL>(1);
       iFiles.add(tmpOutFile.toURI().toURL());
       rSettings.urls(iFiles);

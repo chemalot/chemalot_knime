@@ -68,14 +68,21 @@ import com.jcraft.jsch.UserInfo;
 public class SSHConfiguration {
 
     public static final int DEFAULTSshPort = 22;
+
     private static final int DEFAULTSshTimeoutSec = Settings.SSHTimeout;
     private static final String DEFAULTSshHost = Settings.SSHRemoteHost;
+
     private static final String DEFAULTRunMode = "prd";
     private final String m_remoteHost;
+
     private final int m_portNumber;
+
     private final String m_user;
+
     private final String m_encryptPassword;
+
     private final String m_encryptKeyPassphrase;
+
     private final int m_timeoutSec;
     private final String m_workDirectory;
     private final String m_runMode;

@@ -33,6 +33,8 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import com.genentech.knime.Settings;
+
 /**
  * This is the model implementation of SDFCmdExecutor. 
  * Compile and execute the unix command
@@ -55,10 +57,15 @@ public class SDFCmdRemoteWriterNodeModel extends AbstractCommandNodeModel {
    
    static final String KEY_NOTEXEC = "doNotExecuteTag";
    static final boolean NOTEXEC_DFT = false;
+
+   public static final String KEY_MYSUBOPTS = "mysubOpts";
+   public static final String MYSUBOPTS_DFT = Settings.getMysubOptions();
+   private String  m_mysubOptions = MYSUBOPTS_DFT;
+   
    private boolean m_doNotExecute = NOTEXEC_DFT;
 
    private String m_fullCommandLine;
-   
+
    /**
     * Constructor for the node model.
     */
@@ -120,7 +127,7 @@ public class SDFCmdRemoteWriterNodeModel extends AbstractCommandNodeModel {
    
    private final CommandObject createCommandObject() throws InvalidSettingsException {
        return CommandList.SDF_REMOTE_WRITER.createComamndObject(
-                                           m_outRemoteFileName);
+                                           m_outRemoteFileName, m_mysubOptions);
    }
    
    private void pushFlowVariable(final SDFCmdPortObjectSpec spec) {
@@ -135,6 +142,7 @@ public class SDFCmdRemoteWriterNodeModel extends AbstractCommandNodeModel {
    protected void saveSettingsTo(final NodeSettingsWO settings) {
       settings.addString(KEY_UNIX, m_outUnixCmdName);
       settings.addString(KEY_FILE, m_outRemoteFileName);
+      settings.addString(KEY_MYSUBOPTS, m_mysubOptions);
       settings.addBoolean(KEY_NOTEXEC, m_doNotExecute);
       settings.addString(CFG_FULLCOMMAND_LINE, m_fullCommandLine);
    }
@@ -147,6 +155,7 @@ public class SDFCmdRemoteWriterNodeModel extends AbstractCommandNodeModel {
          throws InvalidSettingsException {
        m_outUnixCmdName = settings.getString(KEY_UNIX, UNIX_DFT);
        m_outRemoteFileName = settings.getString(KEY_FILE, FILE_DFT);
+       m_mysubOptions = settings.getString(KEY_MYSUBOPTS, MYSUBOPTS_DFT);
        m_doNotExecute = settings.getBoolean(KEY_NOTEXEC, NOTEXEC_DFT);
        m_fullCommandLine = settings.getString(CFG_FULLCOMMAND_LINE, "");
    }

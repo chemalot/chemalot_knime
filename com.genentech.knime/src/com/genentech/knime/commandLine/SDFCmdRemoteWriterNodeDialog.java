@@ -42,19 +42,23 @@ import com.genentech.knime.dynamicNode.GNEFlowVariableModelButton;
 
 /**
  * <code>NodeDialog</code> for the SDFCmdExecutor Node.
- * 
+ *
  * @author Man-Ling Lee, Genentech
  */
 public class SDFCmdRemoteWriterNodeDialog extends NodeDialogPane {
+
+	private final JTextField m_remoteFile = new JTextField(25);
+	private final JTextField m_unixCommand = new JTextField(25);
+	private final JCheckBox  m_createCommand = new JCheckBox();
+    private final JTextField m_mysubOptions = new JTextField(30);
+
 	
-	final JTextField m_remoteFile = new JTextField(25);
-	final JTextField m_unixCommand = new JTextField(25);
-	final JCheckBox  m_createCommand = new JCheckBox();
-	/**
+    /**
      * New pane for configuring LigandESDFCmdRemoteWriter node.
      */
     protected SDFCmdRemoteWriterNodeDialog() {
-        final FlowVariableModel fileModel = createFlowVariableModel(SDFCmdRemoteWriterNodeModel.KEY_FILE, FlowVariable.Type.STRING);
+    	//////////////////////////////////////////
+    	final FlowVariableModel fileModel = createFlowVariableModel(SDFCmdRemoteWriterNodeModel.KEY_FILE, FlowVariable.Type.STRING);
         @SuppressWarnings("serial")
         final GNEFlowVariableModelButton fileButton = new GNEFlowVariableModelButton(this, fileModel) {
         	@Override
@@ -66,11 +70,14 @@ public class SDFCmdRemoteWriterNodeDialog extends NodeDialogPane {
         		m_remoteFile.setEditable(bool);
         	}
         };
+        
+        
         final JPanel filePanel = new JPanel();
         filePanel.add(new JLabel("Remote Filename: "));
         filePanel.add(m_remoteFile);
         filePanel.add(fileButton);
         
+        ////////////////////////////////
         final FlowVariableModel unixModel = createFlowVariableModel(SDFCmdRemoteWriterNodeModel.KEY_UNIX, FlowVariable.Type.STRING);
         @SuppressWarnings("serial")
         final GNEFlowVariableModelButton unixButton = new GNEFlowVariableModelButton(this, unixModel) {
@@ -88,13 +95,34 @@ public class SDFCmdRemoteWriterNodeDialog extends NodeDialogPane {
         unixPanel.add(m_unixCommand);
         unixPanel.add(unixButton);
         
+        ////////////////////////////////
+        final FlowVariableModel mysubModel = createFlowVariableModel(SDFCmdRemoteWriterNodeModel.KEY_MYSUBOPTS, FlowVariable.Type.STRING);
+        @SuppressWarnings("serial")
+        final GNEFlowVariableModelButton mysubOptButton = new GNEFlowVariableModelButton(this, mysubModel) {
+        	@Override
+        	public void setTextField(String s) {
+        		m_mysubOptions.setText(s);
+        	}
+        	@Override
+        	public void setFieldEditable(boolean bool) {
+        		m_mysubOptions.setEditable(bool);
+        	}
+        };
+        final JPanel mysubPanel = new JPanel();
+        mysubPanel.add(new JLabel("mysub options:"));
+        mysubPanel.add(m_mysubOptions);
+        mysubPanel.add(mysubOptButton);
+        
+        
+        
         final JPanel noexecPanel = new JPanel();
         noexecPanel.add(new JLabel("Only Create Command (do not execute):"));
         noexecPanel.add(m_createCommand);
         
-        final JPanel p = new JPanel(new GridLayout(3, 1));
+        final JPanel p = new JPanel(new GridLayout(4, 1));
         p.add(filePanel);
         p.add(unixPanel);
+        p.add(mysubPanel);
         p.add(noexecPanel);
         addTab("Options", p);
     }
@@ -108,6 +136,8 @@ public class SDFCmdRemoteWriterNodeDialog extends NodeDialogPane {
         		SDFCmdRemoteWriterNodeModel.FILE_DFT));
         m_createCommand.setSelected(settings.getBoolean(SDFCmdRemoteWriterNodeModel.KEY_NOTEXEC, 
         		SDFCmdRemoteWriterNodeModel.NOTEXEC_DFT));
+        m_mysubOptions.setText(settings.getString(SDFCmdRemoteWriterNodeModel.KEY_MYSUBOPTS, 
+        		SDFCmdRemoteWriterNodeModel.MYSUBOPTS_DFT));
     }
     
     @Override
@@ -115,6 +145,7 @@ public class SDFCmdRemoteWriterNodeDialog extends NodeDialogPane {
         settings.addString(SDFCmdRemoteWriterNodeModel.KEY_UNIX, m_unixCommand.getText());
         settings.addString(SDFCmdRemoteWriterNodeModel.KEY_FILE, m_remoteFile.getText());
         settings.addBoolean(SDFCmdRemoteWriterNodeModel.KEY_NOTEXEC, m_createCommand.isSelected());
+        settings.addString(SDFCmdRemoteWriterNodeModel.KEY_MYSUBOPTS, m_mysubOptions.getText());
     }
 }
 

@@ -22,6 +22,7 @@
 */
 package com.genentech.knime.commandLine;
 
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -29,6 +30,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -61,6 +63,7 @@ public class KnimeSDFCmdBridgeSettingsPanel extends JPanel {
 
     private final JTextField m_lExchangeDir = new JTextField(25);
     private final JTextField m_rExchangeDir = new JTextField(25);
+    private final JTextField m_mysubOptions = new JTextField(40);
 
     /**
      * Creates a new tab.
@@ -70,7 +73,8 @@ public class KnimeSDFCmdBridgeSettingsPanel extends JPanel {
         m_structCol.setMaximumSize(m_structCol.getPreferredSize());
         m_lExchangeDir.setMaximumSize(m_lExchangeDir.getPreferredSize());
         m_rExchangeDir.setMaximumSize(m_rExchangeDir.getPreferredSize());
-        
+        m_mysubOptions.setMaximumSize(m_mysubOptions.getPreferredSize());
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         Dimension five10 = new Dimension(5,25);
         /*
@@ -89,6 +93,7 @@ public class KnimeSDFCmdBridgeSettingsPanel extends JPanel {
 
         optBox.add(tmpBox);
 
+        //////////////////////////////////////////////////////
         tmpBox = Box.createHorizontalBox();
         tmpBox.add(Box.createRigidArea(five10));// horizontalStrut would expand
         tmpBox.add(new JLabel("Local Exchange Directory:"));
@@ -110,9 +115,9 @@ public class KnimeSDFCmdBridgeSettingsPanel extends JPanel {
         };
         tmpBox.add(localSettings);
         tmpBox.add(Box.createHorizontalGlue());
-
         optBox.add(tmpBox);
 
+        //////////////////////////////////////////////////////
         tmpBox = Box.createHorizontalBox();
         tmpBox.add(Box.createRigidArea(five10));// horizontalStrut would expand
         tmpBox.add(new JLabel("Remote Exchange Directory:"));
@@ -136,9 +141,34 @@ public class KnimeSDFCmdBridgeSettingsPanel extends JPanel {
         };
         tmpBox.add(remoteSettings);
         tmpBox.add(Box.createHorizontalGlue());
-
         optBox.add(tmpBox);
-
+        
+        //////////////////////////////////////////////////////
+        tmpBox = Box.createHorizontalBox();
+        tmpBox.add(Box.createRigidArea(five10));// horizontalStrut would expand
+        tmpBox.add(new JLabel("mysub options:"));
+        tmpBox.add(Box.createRigidArea(five10));
+        tmpBox.add(m_mysubOptions);
+        m_mysubOptions.setToolTipText(
+           "Path to the same network directory as the 'Local Exchange Directory' from remote host.");
+        final FlowVariableModel fvmMySub = parent.createFlowVariableModel(
+        		new String[]{KnimeSDFCMDBridgeNodeModel.CMD_KNIME_BRIDGE_SET, 
+        				KnimeSDFCMDBridgeSettings.CFG_MYSUB_OPTS}, FlowVariable.Type.STRING);
+        @SuppressWarnings("serial")
+        GNEFlowVariableModelButton mysubSettings = new GNEFlowVariableModelButton(parent, fvmMySub) {
+        	@Override
+        	public void setTextField(String s) {
+        		m_mysubOptions.setText(s);
+        	}
+        	@Override
+        	public void setFieldEditable(boolean bool) {
+        		m_mysubOptions.setEditable(bool);
+        	}
+        };
+        tmpBox.add(mysubSettings);
+        tmpBox.add(Box.createHorizontalGlue());
+        optBox.add(tmpBox);
+        
         // create the panel
         add(optBox);
     }
@@ -154,7 +184,8 @@ public class KnimeSDFCmdBridgeSettingsPanel extends JPanel {
         m_structCol.update(inPortspecs, setting.getStructColumn());
         m_lExchangeDir.setText(setting.getLocalExchangeDir());
         m_rExchangeDir.setText(setting.getRemoteExchangeDir());
-    }
+        m_mysubOptions.setText(setting.getMysubOptions());
+     }
 
     /**
      * Called by the parent to get current values saved into the settings
@@ -164,6 +195,6 @@ public class KnimeSDFCmdBridgeSettingsPanel extends JPanel {
      */
     public KnimeSDFCMDBridgeSettings saveSettings() {
         return new KnimeSDFCMDBridgeSettings(m_structCol.getSelectedColumn(),
-           m_lExchangeDir.getText(), m_rExchangeDir.getText());
+           m_lExchangeDir.getText(), m_rExchangeDir.getText(), m_mysubOptions.getText());
     }
 }

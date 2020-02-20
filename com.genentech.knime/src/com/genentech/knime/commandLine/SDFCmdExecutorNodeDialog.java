@@ -22,6 +22,8 @@
 */
 package com.genentech.knime.commandLine;
 
+import java.awt.GridLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -39,19 +41,21 @@ import com.genentech.knime.dynamicNode.GNEFlowVariableModelButton;
 
 /**
  * <code>NodeDialog</code> for the SDFCmdExecutor Node.
- * 
+ *
  * @author Man-Ling Lee, Genentech
  */
 public class SDFCmdExecutorNodeDialog extends NodeDialogPane {
 	
 	private JTextField m_unixCommand = new JTextField(25);
+	private JTextField m_mysubOptions = new JTextField(30);
 	final static String UNIX_KEY = "outUnixCmdVarTag";
-	
+	final static String MYSUB_KEY = "mysubTag";
+
     /**
      * New pane for configuring SDFCmdExecutor node.
      */
     protected SDFCmdExecutorNodeDialog() {
-        final FlowVariableModel fvm = createFlowVariableModel("outUnixCmdVarTag", FlowVariable.Type.STRING);
+        final FlowVariableModel fvm = createFlowVariableModel(UNIX_KEY, FlowVariable.Type.STRING);
         @SuppressWarnings("serial")
         final GNEFlowVariableModelButton unix = new GNEFlowVariableModelButton(this, fvm) {
         	@Override
@@ -63,13 +67,18 @@ public class SDFCmdExecutorNodeDialog extends NodeDialogPane {
         		m_unixCommand.setEditable(bool);
         	}
         };
-        final JPanel p = new JPanel();
-        p.add(new JLabel("Unix command variable:"));
-        p.add(m_unixCommand);
-        p.add(unix);
+        final JPanel unixPanel = new JPanel();
+        unixPanel.add(new JLabel("Unix command variable:"));
+        unixPanel.add(m_unixCommand);
+        unixPanel.add(unix);
+        
+        
+        final JPanel p = new JPanel(new GridLayout(2, 1));
+        p.add(unixPanel);
         addTab("Options", p);
+        
     }
-    
+
     @Override
     protected void loadSettingsFrom(NodeSettingsRO settings, PortObjectSpec[] specs) throws NotConfigurableException {
     	m_unixCommand.setText(settings.getString(UNIX_KEY, ""));
@@ -77,7 +86,7 @@ public class SDFCmdExecutorNodeDialog extends NodeDialogPane {
     
     @Override
     protected void saveSettingsTo(NodeSettingsWO settings) throws InvalidSettingsException {
-    	settings.addString(UNIX_KEY, m_unixCommand.getText());
+    	settings.addString(UNIX_KEY,  m_unixCommand.getText());
     }
 }
 

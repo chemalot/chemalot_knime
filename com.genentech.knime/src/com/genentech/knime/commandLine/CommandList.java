@@ -155,8 +155,8 @@ public class CommandList {
             
             @Override
             public CommandObject createCommandObject(final CommandObject parentCommand,
-                    final String userOptions) {
-                return new RemoteWriterCmdObject(parentCommand, userOptions, this);
+                    final String userOptions, final String mysubOptions) {
+                return new RemoteWriterCmdObject(parentCommand, userOptions, mysubOptions, this);
             }
         };
         return rWriter;

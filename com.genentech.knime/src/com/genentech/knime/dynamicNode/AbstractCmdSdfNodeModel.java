@@ -78,7 +78,7 @@ public class AbstractCmdSdfNodeModel extends AbstractCommandNodeModel {
         if (cmdConfiguration == null) {
             throw new InvalidSettingsException("No configuration available");
         }
-        return getCMDProgramDefintion().createComamndObject(getUserOptions());
+        return getCMDProgramDefintion().createComamndObject(getUserOptions(), getMysubOptions());
     }
 
     /** @return the cmdSettings */
@@ -94,6 +94,11 @@ public class AbstractCmdSdfNodeModel extends AbstractCommandNodeModel {
     /** @return the user options */
     protected final String getUserOptions() {
         return m_cmdSettings.getUserOptions();
+    }
+
+    /** @return the mysub options */
+    protected final String getMysubOptions() {
+        return m_cmdSettings.getMysubOptions();
     }
 
     @Override

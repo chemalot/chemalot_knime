@@ -46,6 +46,8 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortObjectSpecZipInputStream;
 import org.knime.core.node.port.PortObjectSpecZipOutputStream;
 
+import com.genentech.knime.Settings;
+
 /**
  * {@link PortObjectSpec} for SDF command Line Nodes.
  * 
@@ -68,7 +70,7 @@ public class SDFCmdPortObjectSpec implements PortObjectSpec {
     public SDFCmdPortObjectSpec(final SDFCmdPortObjectSpec parentSpec, final CommandObject command) {
         CMDProgramDefinition pdef = command.getProgramDefintion();
         m_commandObject = pdef.createCommandObject(parentSpec.m_commandObject, 
-                                                     command.getUserOptions() );
+                                                     command.getUserOptions(), command.getMysubOptions() );
         m_SSHConfiguration = parentSpec.getSSHConfiguration();
     }
     
@@ -83,7 +85,7 @@ public class SDFCmdPortObjectSpec implements PortObjectSpec {
         }
         CMDProgramDefinition pdef = command.getProgramDefintion();
         m_commandObject = pdef.createCommandObject(parentCommands,
-                                                   command.getUserOptions()); 
+                                                   command.getUserOptions(), command.getMysubOptions()); 
         // only takes the SSH configuration from the first port
         m_SSHConfiguration = parentSpecs[0].getSSHConfiguration();
     }
@@ -179,6 +181,17 @@ public class SDFCmdPortObjectSpec implements PortObjectSpec {
         }
         String userOptions = settings.getString("userOptions");
         String progDefinitionName = settings.getString("progDefinitionName");
+        
+        String mysubOptions;
+        try {
+        	mysubOptions = settings.getString("mysubOptions");
+        } catch(InvalidSettingsException e)
+        {   // forward compatibility use default values
+        	mysubOptions = Settings.getMysubOptions();
+        }
+        
+        
+        
         CMDProgramDefinition progDefinition;
         try {
             progDefinition = CommandList.DEFAULT.getDefinition(progDefinitionName);
@@ -186,7 +199,7 @@ public class SDFCmdPortObjectSpec implements PortObjectSpec {
         {   LOGGER.error(String.format("Error trying to load %s\n", progDefinitionName));
             throw e;
         }
-        return progDefinition.createCommandObject(commands, userOptions);
+        return progDefinition.createCommandObject(commands, userOptions, mysubOptions);
     }
     
     private static void save(final PortObjectSpecZipOutputStream os, 
@@ -212,6 +225,7 @@ public class SDFCmdPortObjectSpec implements PortObjectSpec {
     
     private static void save(final NodeSettingsWO settings, final CommandObject command) {
         settings.addString("userOptions", command.getUserOptions());
+        settings.addString("mysubOptions", command.getMysubOptions());
         settings.addString("progDefinitionName", command.getProgramDefintion().getName());
         List<CommandObject> list = command.getParentCmdObjectList();
         ArrayList<String> names = new ArrayList<String>(list.size());

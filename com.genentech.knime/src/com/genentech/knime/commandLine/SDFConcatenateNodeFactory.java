@@ -65,7 +65,7 @@ public class SDFConcatenateNodeFactory extends NodeFactory<AbstractCommandNodeMo
      */
     @Override
     public boolean hasDialog() {
-        return false;
+        return true;
     }
 
     /**
@@ -73,7 +73,7 @@ public class SDFConcatenateNodeFactory extends NodeFactory<AbstractCommandNodeMo
      */
     @Override
     public NodeDialogPane createNodeDialogPane() {
-        return null;
+        return new SDFConcatenateNodeDialog();
     }
 
 }

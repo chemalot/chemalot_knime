@@ -55,6 +55,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -78,6 +79,7 @@ import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.property.hilite.HiLiteHandler;
 
+import com.genentech.knime.Settings;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.Session;
 
@@ -97,6 +99,9 @@ public abstract class AbstractSSHNodeModel extends NodeModel {
 
 
    private TABSSHToolSettings configSettings = createSettings();
+   
+   // hard coded to prd because SDF/TABSSH nodes do not have dialog
+   private static final String CSHSettingsFile = Settings.SSHInitFileTemplate.replaceAll("\\$mode", "prd");
 
    
    /** Create node with one input and two output ports
@@ -104,10 +109,10 @@ public abstract class AbstractSSHNodeModel extends NodeModel {
      */
    public AbstractSSHNodeModel() {
       super(new PortType[]{BufferedDataTable.TYPE_OPTIONAL}, 
-    		  new PortType[]{BufferedDataTable.TYPE, BufferedDataTable.TYPE});
+    		new PortType[]{BufferedDataTable.TYPE, BufferedDataTable.TYPE});      
    }
 
-   /**
+  /**
     * Overwrite returning new configSettings object
     */
    public abstract TABSSHToolSettings createSettings();
@@ -199,13 +204,37 @@ public abstract class AbstractSSHNodeModel extends NodeModel {
 
          
          LOGGER.debug("Opening Exec channel");
+         File tempFile = null;
          ChannelExec execChannel = (ChannelExec) session.openChannel("exec");
          try {
+            String dir = configSettings.getDirectory().trim();
+            if( dir.length() == 0 ) dir = ".";
+            dir = String.format("cd \"%s\"", dir);
+            
             String cmd = configSettings.getCommand();
+            tempFile = File.createTempFile("knimeSSH"+System.currentTimeMillis(), ".csh", 
+            		                            new File(Settings.getExchangeLocalDir()));
+            
+            // using chmod in the command is not an option since the remote user might not have permission
+            // the following has no effect when run from windows so it is no use:
+            tempFile.setExecutable(true);
+            
+            FileWriter out = new FileWriter(tempFile);
+            out.write(cmd.replaceAll("\n\r", "\n"));
+            out.write('\n');
+            out.close();
+            tempFile.setExecutable(true);
+            String remoteFile = Settings.getExchangeRemoteDir() + '/' + tempFile.getName();
+            String mysub = String.format("%s;tcsh -fc 'source %s; mysub.py -interactive -jobName knime_%s %s -- tcsh -f %s'", 
+		               dir, CSHSettingsFile, 
+		               this.getClass().getName().substring(0, 3), 
+		               configSettings.getMysubOptions(),
+		               remoteFile);
+            
             // replace $inFile and $outFile with paths
-            execChannel.setCommand(cmd);
+            execChannel.setCommand(mysub);
             if (tmpInStrm != null) {
-            	execChannel.setInputStream(tmpInStrm);
+            execChannel.setInputStream(tmpInStrm);
             }
             execChannel.setErrStream(tmpErrStrm);
             execChannel.setOutputStream(tmpOutStrm);
@@ -229,9 +258,10 @@ public abstract class AbstractSSHNodeModel extends NodeModel {
                execChannel.disconnect();
             }
             if (tmpInStrm != null) {
-            	tmpInStrm.close();
-            	tmpInFile.delete();
-            }
+            tmpInStrm.close();
+            tmpInFile.delete();
+            if( tempFile != null) tempFile.delete();
+         }
             tmpOutStrm.close();
          }
          

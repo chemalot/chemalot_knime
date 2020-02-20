@@ -32,21 +32,21 @@ import java.util.List;
  */
 public class SDFConcatenateCmdObject extends CommandObject {
 
-    SDFConcatenateCmdObject(final String userOptions,
+    SDFConcatenateCmdObject(final String userOptions, final String mysubOptions,
             final CMDProgramDefinition progDefintion) {
-        super(userOptions, progDefintion);
+        super(userOptions, mysubOptions, progDefintion);
     }
 
     
     public SDFConcatenateCmdObject(final CommandObject parentCommand,
-            final String userOptions, final CMDProgramDefinition progDefinition) {
-        super(parentCommand, userOptions, progDefinition);
+            final String userOptions, String mysubOptions, final CMDProgramDefinition progDefinition) {
+        super(parentCommand, userOptions, mysubOptions, progDefinition);
     }
     
     
     public SDFConcatenateCmdObject(List<CommandObject> parentCommands,
-            String userOptions, CMDProgramDefinition progDefintion) {
-        super(parentCommands, userOptions, progDefintion);
+            String userOptions, String mysubOptions, CMDProgramDefinition progDefintion) {
+        super(parentCommands, userOptions, mysubOptions, progDefintion);
     }
 
     protected String getCSHPipe(boolean newLineAllowed, String indent ) {

@@ -54,7 +54,7 @@ public class ConsumerNodeDialogPane extends NodeDialogPane {
 	    m_cmdConfigurationPanel = new CmdConfigurationPanel(programDefinition, this);
 	    addTab("Command Configuration", m_cmdConfigurationPanel);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -82,5 +82,6 @@ public class ConsumerNodeDialogPane extends NodeDialogPane {
         }
         cmdConfiguraton.loadInDialog(cmdSettings);
         m_cmdConfigurationPanel.loadSettings(cmdConfiguraton);
+
 	}
 }

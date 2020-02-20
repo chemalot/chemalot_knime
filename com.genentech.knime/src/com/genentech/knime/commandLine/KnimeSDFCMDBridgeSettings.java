@@ -37,24 +37,26 @@ import com.genentech.knime.Settings;
 public class KnimeSDFCMDBridgeSettings {
 
     private static final String CFG_STRUCT_COL = "struct_col";
-    static final String CFG_LOCAL_EX_DIR = "localEDir";
+    static final String CFG_LOCAL_EX_DIR  = "localEDir";
     static final String CFG_REMOTE_EX_DIR = "remoteEDir";
+    static final String CFG_MYSUB_OPTS    = "mysubOpts";
     private final String m_StructCol;
     private final String m_localExchangeDir;
     private final String m_remoteExchangeDir;
+    private final String m_mySubOptions;
     
     public KnimeSDFCMDBridgeSettings(String structColumn, 
-            String localExchangeDir, String remoteExchangeDir)
+            String localExchangeDir, String remoteExchangeDir, String mysubOptions)
     {   this.m_StructCol = structColumn;
         this.m_localExchangeDir = localExchangeDir;
         this.m_remoteExchangeDir = remoteExchangeDir;
+        this.m_mySubOptions = mysubOptions;
     }
     
     
     public String getStructColumn() {
         return m_StructCol;
     }
-
 
     public String getLocalExchangeDir() {
         return m_localExchangeDir;
@@ -64,30 +66,41 @@ public class KnimeSDFCMDBridgeSettings {
         return m_remoteExchangeDir;
     }
 
+	public String getMysubOptions() {
+		return m_mySubOptions;
+	}
+
     public static KnimeSDFCMDBridgeSettings loadFromModel(final NodeSettingsRO settings)
             throws InvalidSettingsException {
         String structCol = settings.getString(CFG_STRUCT_COL);
         String lDir = settings.getString(CFG_LOCAL_EX_DIR);
         String rDir = settings.getString(CFG_REMOTE_EX_DIR);
+        String mOpt = settings.getString(CFG_MYSUB_OPTS, Settings.getMysubOptions());
 
-        return new KnimeSDFCMDBridgeSettings(structCol, lDir, rDir);
+        return new KnimeSDFCMDBridgeSettings(structCol, lDir, rDir, mOpt);
     }
 
     public static KnimeSDFCMDBridgeSettings loadFromDialog(final NodeSettingsRO settings) {
         String structCol = settings.getString(CFG_STRUCT_COL, "MOLFILE");
+        
         String lDir = Settings.getExchangeLocalDir();
         lDir = settings.getString(CFG_LOCAL_EX_DIR, lDir);
         
         
         String rDir = Settings.getExchangeRemoteDir();
-        settings.getString(CFG_REMOTE_EX_DIR, rDir);
+        rDir = settings.getString(CFG_REMOTE_EX_DIR, rDir);
 
-        return new KnimeSDFCMDBridgeSettings(structCol, lDir, rDir);
+        String mOpt = Settings.getMysubOptions();
+        mOpt = settings.getString(CFG_MYSUB_OPTS, mOpt);
+
+        return new KnimeSDFCMDBridgeSettings(structCol, lDir, rDir, mOpt);
     }
 
     public static void validateSettings(final NodeSettingsRO settings)
             throws InvalidSettingsException {
+    	
         KnimeSDFCMDBridgeSettings kSet = loadFromDialog(settings);
+        
         String lsDir = kSet.getLocalExchangeDir();
         if( lsDir == null )
             throw new InvalidSettingsException(
@@ -96,11 +109,16 @@ public class KnimeSDFCMDBridgeSettings {
         if( kSet.getRemoteExchangeDir() == null )
             throw new InvalidSettingsException(
                     "Remote exchange directory not set.");
+
+        if( kSet.getMysubOptions() == null )
+            throw new InvalidSettingsException(
+                    "Mysub options not set.");
     }
 
     public void save(final NodeSettingsWO settings) {
         settings.addString(CFG_STRUCT_COL, getStructColumn());
         settings.addString(CFG_LOCAL_EX_DIR, getLocalExchangeDir());
         settings.addString(CFG_REMOTE_EX_DIR, getRemoteExchangeDir());
-    }
+        settings.addString(CFG_MYSUB_OPTS, getMysubOptions());
+	}
 }

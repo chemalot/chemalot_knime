@@ -89,6 +89,10 @@ public abstract class CMDProgramDefinition implements
         return defaultOpts;
     }
 
+    public String getDefaultMysubOpts() {
+        return Settings.getMysubOptions();
+    }
+
     public CMDPortType[] getInPorts() {
         return inPorts;
     }
@@ -177,8 +181,8 @@ public abstract class CMDProgramDefinition implements
      * special processing.
      * see {@see ConcatenateProgramObject}
      */       
-    public CommandObject createComamndObject(final String userOptions) {
-        return new CommandObject(userOptions, this);
+    public CommandObject createComamndObject(final String userOptions, final String mysubOptions) {
+        return new CommandObject(userOptions, mysubOptions, this);
     }
     
     /**
@@ -187,12 +191,12 @@ public abstract class CMDProgramDefinition implements
      * see {@see ConcatenateProgramObject}
      */       
     public CommandObject createCommandObject(final CommandObject parentCommand,
-            final String userOptions) {
-        return new CommandObject(parentCommand, userOptions, this);
+            final String userOptions, String mysubOptions) {
+        return new CommandObject(parentCommand, userOptions, mysubOptions, this);
     }
     
     public CommandObject createCommandObject(final List<CommandObject> parentCommands,
-            final String userOptions ) {
-        return new CommandObject(parentCommands, userOptions, this);
+            final String userOptions, String mysubOptions ) {
+        return new CommandObject(parentCommands, userOptions, mysubOptions, this);
     }
 }

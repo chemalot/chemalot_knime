@@ -30,6 +30,8 @@ import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 
+import com.genentech.knime.Settings;
+
 /**
  * SSH Settings for SDF SSH Node. 
  * 
@@ -40,6 +42,7 @@ import org.knime.core.node.NodeSettingsWO;
  */
 public class SDFSSHToolSettings extends TABSSHToolSettings{
 
+   public static final String DEFAULT_MYSUB_OPTS = Settings.getMysubOptions();
    private static final String CFG_STRUCT_COL = "structColumn";
 
    private String m_StructColumn;
@@ -48,7 +51,7 @@ public class SDFSSHToolSettings extends TABSSHToolSettings{
     * Default constructor with default settings, possibly invalid settings.
     */
    public SDFSSHToolSettings() {
-      super();
+      super(DEFAULT_MYSUB_OPTS);
       m_StructColumn = "";
    }
 

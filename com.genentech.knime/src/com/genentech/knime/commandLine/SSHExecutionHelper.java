@@ -95,48 +95,38 @@ public class SSHExecutionHelper {
          LOGGER.debug("Opening Exec channel");
          ChannelExec execChannel = (ChannelExec) session.openChannel("exec");
          try {
+        	CommandObject cmdObj = pSpec.getCommandObject();
             String pipeCommand;
-            if( sshConfig.isExecuteSSH() )
-                pipeCommand = pSpec.getCommandObject().getMyCommandLine();
-            else    
-                // TODO I think using getCSHPipe(true) should work and then we can do thinks like cat <<COMS>tmp$$.grvy\nsdfGroovy.csh -c $$.grvy
+            String mysub;
+            if( sshConfig.isExecuteSSH() ) {
+                pipeCommand = cmdObj.getMyCommandLine();
+            	mysub = cmdObj.getMysubOptions();
+            }
+            else {    
+                // TODO I think using getCSHPipe(true) should work and then we can do things like cat <<COMS>tmp$$.grvy\nsdfGroovy.csh -c $$.grvy
                 // cf. /gne/home/albertgo/tmp/testTcshBash.pl
-                pipeCommand = pSpec.getCommandObject().getCSHPipe(false);
+                pipeCommand = cmdObj.getCSHPipe(false);
+            	mysub = cmdObj.getRootMysubOptions();
+            }
 
             // Prepend "set flowVariableName=flowVariableValue;" strings
             // so that users can use "$flowVarName" in the command line options 
             // to specify the value of a flow variable
-            StringBuilder env = new StringBuilder(vars.size()*20);
-            for(FlowVariable var : vars) {
-                String vName = var.getName();
-                
-                // Only flowVarabiles that are valid unix varaible names
-                if( ! vName.matches("[._\\w]+") ) continue;
-                vName = vName.replace('.', '_');
-                
-                // ignore flow variable containing strings with newlines
-                String value = var.getValueAsString().trim();
-                if( value.indexOf('\n') >-1 || value.indexOf('\r') > -1 ) continue;
-                if( value.length() > 500 )
-                {   LOGGER.warn("Flow Variable not passed to ssh (longer than 500): " + vName);
-                    continue;
-                }
-                // 20160111 we should be able to use "'\''" instead of "'\"'\"'"
-                // since this results in exponential lengthening of the string it might be worthwhile
-                // cf. bsub command line subnode
-                value = value.replace("'", "'\"'\"'");
-                env.append("set ").append(vName).append("='").append(value).append("';");
-            }
+            String env = getEnvCommands(vars);
             
+            mysub = String.format("mysub.py -interactive -jobName %s %s -- ", 
+            		               "knime_" + cmdObj.getProgramDefintion().getLabel().replace(" ", ""),
+            		               mysub);
             String cmd = 
                   "source " + sshConfig.getInitScriptName() + "; "
                 + env
                 + "cd " + sshConfig.getWorkDirectory() + ";" 
-                + pipeCommand;
+                + mysub
+                + '\'' + pipeCommand.replace("'", "'\\''") + '\'';
             // 20160111 we should be able to use "'\''" instead of "'\"'\"'"
             // since this results in exponential lengthening of the string it might be worthwhile
             // cf. bsub command line subnode
-            cmd = "/bin/tcsh -fc '" + cmd.replace("'", "'\"'\"'") + "'";
+            cmd = "/bin/tcsh -fc '" + cmd.replace("'", "'\\''") + "'";
             execChannel.setCommand(cmd);
             
             if (tmpInFile != null) {
@@ -198,6 +188,31 @@ public class SSHExecutionHelper {
          }
       }
    }
+
+	private static String getEnvCommands(Collection<FlowVariable> vars) {
+		StringBuilder env = new StringBuilder(vars.size()*20);
+		for(FlowVariable var : vars) {
+		    String vName = var.getName();
+		    
+		    // Only flowVarabiles that are valid unix varaible names
+		    if( ! vName.matches("[._\\w]+") ) continue;
+		    vName = vName.replace('.', '_');
+		    
+		    // ignore flow variable containing strings with newlines
+		    String value = var.getValueAsString().trim();
+		    if( value.indexOf('\n') >-1 || value.indexOf('\r') > -1 ) continue;
+		    if( value.length() > 500 )
+		    {   LOGGER.warn("Flow Variable not passed to ssh (longer than 500): " + vName);
+		        continue;
+		    }
+		    // 20160111 we should be able to use "'\''" instead of "'\"'\"'"
+		    // since this results in exponential lengthening of the string it might be worthwhile
+		    // cf. bsub command line subnode
+		    value = value.replace("'", "'\"'\"'");
+		    env.append("setenv ").append(vName).append(" '").append(value).append("';");
+		}
+		return env.toString();
+	}
 
 
     /**

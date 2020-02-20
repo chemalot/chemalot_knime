@@ -65,6 +65,7 @@ public class Settings {
     
     private static String EXCHANGELocalDir = null;
     private static String EXCHANGERemoteDir = null;
+    private static String MYSUBOptions = null;
     static boolean DISABLEKnimeUpdateSites;
     public static final int SSHTimeout;
     public static final String SSHInitFileTemplate;
@@ -85,13 +86,20 @@ public class Settings {
         return EXCHANGERemoteDir;
     }
 
-    static {
+
+	public static String getMysubOptions() {
+		if( MYSUBOptions != null ) return MYSUBOptions;
+        
+		MYSUBOptions = "-limit 24 -nCPU 1 -totalMem 30 -jobName knime";
+        return MYSUBOptions;	}
+
+	static {
         Element root = getConfigRoot(CMD_CONFIG_FILE_PATH);
         readExchangeDirs(root);
         
         Element config = root.getChild("config");
         Element ssh = config.getChild("ssh");
-        SSHRemoteHost = getAttribute(ssh, "remoteHost", "computeHost");
+        SSHRemoteHost = getAttribute(ssh, "remoteHost", "rosalind.gene.com");
         SSHTimeout = Integer.parseInt(getAttribute(ssh, "timeout", "1000"));
         SSHInitFileTemplate = getAttribute(ssh, "initFileTemplate", "knimerc.$mode");
         
@@ -221,7 +229,7 @@ public class Settings {
             String cType = con.getContentType();
             if( cType == null ) cType = "";
             if( ! requiredTypeRe.matcher(cType).matches() )
-                throw new IOException("Wrong File Type:");
+                throw new IOException("Wrong File Type:" + cType);
             in = con.getInputStream();
             
             out = new FileOutputStream(new File(cacheDir, fName));

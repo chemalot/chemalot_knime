@@ -33,13 +33,14 @@ import com.genentech.knime.commandLine.CMDProgramDefinition;
 
 /**
  * Stores settings for command line option of command line nodes.
- * 
+ *
  * @author Bernd Wiswedel, KNIME.com, Zurich, Switzerland
  */
 public final class CmdConfiguration {
 
-    private final CMDProgramDefinition m_programDefinition;
+	private final CMDProgramDefinition m_programDefinition;
     private String m_userOptions;
+    private String m_mysubOptions;
 
     /**
      *  */
@@ -52,6 +53,10 @@ public final class CmdConfiguration {
         return m_userOptions;
     }
     
+	public String getMysubOptions() {
+		return m_mysubOptions;
+	}
+
     /** @return the program definition */
     public CMDProgramDefinition getProgramDefinition() {
         return m_programDefinition;
@@ -62,17 +67,23 @@ public final class CmdConfiguration {
         m_userOptions = userOptions;
     }
 
+    public void setMysubOptions(final String mysubOptions) {
+        m_mysubOptions = mysubOptions;
+    }
+
     public void loadInModel(final NodeSettingsRO settings) throws InvalidSettingsException {
-        m_userOptions = settings.getString("userOptions");
+        m_userOptions  = settings.getString("userOptions");
+    	m_mysubOptions = settings.getString("mysubOptions", m_programDefinition.getDefaultMysubOpts());
     }
 
     public void loadInDialog(final NodeSettingsRO settings) {
-        m_userOptions = settings.getString("userOptions",
-                m_programDefinition.getDefaultOpts());
+        m_userOptions = settings.getString("userOptions", m_programDefinition.getDefaultOpts());
+        m_mysubOptions = settings.getString("mysubOptions", m_programDefinition.getDefaultMysubOpts());
     }
 
     public void save(final NodeSettingsWO settings) {
-        settings.addString("userOptions", m_userOptions);
+        settings.addString("userOptions",  m_userOptions);
+        settings.addString("mysubOptions", m_mysubOptions);
     }
 
 }

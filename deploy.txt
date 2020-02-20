@@ -13,7 +13,7 @@ Follow this steps to release a change to the source code.
       - in the Dependencies tab: check "Recompute when features plugins change"
       -                          click compute
       - save
-   - open: knimeGenes/site.xml
+   - open: com.genentech.knime.update/site.xml
       - in "Site Map" tab: 
          - click on gCategory in tree
          - click "Add feature..."

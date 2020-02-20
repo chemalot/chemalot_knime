@@ -88,7 +88,8 @@ public class KnimeSDFCMDBridgeNodeModel extends AbstractCommandNodeModel {
 
             tmpExchangeFile = File.createTempFile("SDFCmd_", ".sdf", localExchangeDir);
             String remoteFile = replaceVars(m_Settings.getRemoteExchangeDir() + "/" + tmpExchangeFile.getName());
-            CommandObject command = CommandList.SDF_KNIME_BRIDGE.createComamndObject(remoteFile);
+            String mysubOpts = m_Settings.getMysubOptions();
+            CommandObject command = CommandList.SDF_KNIME_BRIDGE.createComamndObject(remoteFile, mysubOpts);
             
             return new PortObjectSpec[]{new SDFCmdPortObjectSpec(command, m_sshConfiguration)};
             
@@ -108,7 +109,8 @@ public class KnimeSDFCMDBridgeNodeModel extends AbstractCommandNodeModel {
         BufferedDataTable inTable = (BufferedDataTable) inData[0];
 
         String remoteFile = m_Settings.getRemoteExchangeDir() + "/" + tmpExchangeFile.getName();
-        CommandObject command = CommandList.SDF_KNIME_BRIDGE.createComamndObject(remoteFile);
+        String mysubOpts = m_Settings.getMysubOptions();
+        CommandObject command = CommandList.SDF_KNIME_BRIDGE.createComamndObject(remoteFile, mysubOpts);
         writeTableToSDFFile(exec, inTable, tmpExchangeFile);
 
         SDFCmdPortObjectSpec outSpec = new SDFCmdPortObjectSpec( command, m_sshConfiguration);

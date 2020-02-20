@@ -75,24 +75,17 @@ public class TABSSHToolSettingsPanel extends JPanel {
 
     // button
     private final JTextField m_host = new JTextField(30);
-
     private final JTextField m_port = new JTextField(5);
-
     private final JTextField m_timeout = new JTextField(5);
-
-    // button
+    private final JTextField m_mysubOpts = new JTextField(35);
+    private final JTextField m_directory = new JTextField(25);
     private final JTextField m_user = new JTextField(30);
-
     private final JPasswordField m_password = new JPasswordField(30);
+    private final JPasswordField m_keyPassphrase = new JPasswordField(30);
+    private final JTextArea m_command = new JTextArea(3,50);
 
     private boolean m_passwordChanged = false;
-
-    private final JPasswordField m_keyPassphrase = new JPasswordField(30);
-
     private boolean m_keyPassphraseChanged = false;
-
-    // button
-    private final JTextArea m_command = new JTextArea(3,50);
 
     /**
      * Creates a new tab.
@@ -110,12 +103,11 @@ public class TABSSHToolSettingsPanel extends JPanel {
         // Host + Port + Timeout
         Box hostBox = Box.createHorizontalBox();
         hostBox.add(new JLabel("Host:"));
-
         hostBox.add(Box.createHorizontalStrut(3));
         hostBox.add(m_host);
         m_host.setToolTipText("Enter hostname or IP address");
         final FlowVariableModel fvmHost = parent.createFlowVariableModel(
-        		"remoteHost", FlowVariable.Type.STRING);
+        		TABSSHToolSettings.CFG_HOST, FlowVariable.Type.STRING);
         @SuppressWarnings("serial")
         final GNEFlowVariableModelButton hostSettings = new GNEFlowVariableModelButton(parent, fvmHost) {
         	@Override
@@ -150,7 +142,7 @@ public class TABSSHToolSettingsPanel extends JPanel {
         userBox.add(m_user);
         m_user.setToolTipText("Leave empty for current user");
         final FlowVariableModel fvmUser = parent.createFlowVariableModel(
-        		"userName", FlowVariable.Type.STRING);
+        		TABSSHToolSettings.CFG_USER, FlowVariable.Type.STRING);
         @SuppressWarnings("serial")
         final GNEFlowVariableModelButton userSettings = new GNEFlowVariableModelButton(parent, fvmUser) {
         	@Override
@@ -230,7 +222,7 @@ public class TABSSHToolSettingsPanel extends JPanel {
         cmdBox.add(m_command);
 
         final FlowVariableModel fvmCommand = parent.createFlowVariableModel(
-        		"remoteCommand", FlowVariable.Type.STRING);
+        		TABSSHToolSettings.CFG_COMMAND, FlowVariable.Type.STRING);
         @SuppressWarnings("serial")
         final GNEFlowVariableModelButton commandSettings = new GNEFlowVariableModelButton(parent, fvmCommand) {
         	@Override
@@ -253,13 +245,58 @@ public class TABSSHToolSettingsPanel extends JPanel {
         commandBox.add(cmdBox);
         commandBox.add(Box.createVerticalStrut(5));
         commandBox.add(Box.createHorizontalGlue());
-         
-         // create the panel
+        
+        
+        Box dirBox = Box.createHorizontalBox();
+        dirBox.add(new JLabel("Working Directory:"));
+        dirBox.add(Box.createHorizontalStrut(3));
+        dirBox.add(m_directory);
+        m_directory.setToolTipText("Directory to issue command: Default: $HOME)");
+        final FlowVariableModel fvmDir = parent.createFlowVariableModel(
+        		TABSSHToolSettings.CFG_DIRECTORY, FlowVariable.Type.STRING);
+        @SuppressWarnings("serial")
+        final GNEFlowVariableModelButton dirSettings = new GNEFlowVariableModelButton(parent, fvmDir) {
+        	@Override
+        	public void setTextField(String s) {
+        		m_directory.setText(s);
+        	}
+        	@Override
+        	public void setFieldEditable(boolean bool) {
+        		m_directory.setEditable(bool);
+        	}
+        };
+        dirBox.add(dirSettings);
+
+        Box mysubBox = Box.createHorizontalBox();
+        mysubBox.add(new JLabel("mysub options:"));
+        mysubBox.add(Box.createHorizontalStrut(3));
+        mysubBox.add(m_mysubOpts);
+        m_mysubOpts.setToolTipText("Enter options for queuing system");
+        final FlowVariableModel fvmMysub = parent.createFlowVariableModel(
+        		TABSSHToolSettings.CFG_MYSUB_OPTS, FlowVariable.Type.STRING);
+        @SuppressWarnings("serial")
+        final GNEFlowVariableModelButton mysubSettings = new GNEFlowVariableModelButton(parent, fvmMysub) {
+        	@Override
+        	public void setTextField(String s) {
+        		m_mysubOpts.setText(s);
+        	}
+        	@Override
+        	public void setFieldEditable(boolean bool) {
+        		m_mysubOpts.setEditable(bool);
+        	}
+        };
+        mysubBox.add(mysubSettings);
+
+        ///////////////////////////////////// mysub
         add(Box.createVerticalStrut(5));
         add(connectBox);
         add(Box.createVerticalStrut(10));
         add(commandBox);
-
+        add(Box.createVerticalStrut(5));
+        add(dirBox);
+        add(Box.createVerticalStrut(5));
+        add(mysubBox);
+                
     }
 
     /**
@@ -369,6 +406,8 @@ public class TABSSHToolSettingsPanel extends JPanel {
         }
 
         settings.setCommand(m_command.getText());
+        settings.setDirectory(m_directory.getText());
+        settings.setMysubOptions(m_mysubOpts.getText());
     }
 
     /**
@@ -401,6 +440,8 @@ public class TABSSHToolSettingsPanel extends JPanel {
         m_keyPassphrase.setText(settings.getEncryptKeyPassphrase());
         m_keyPassphraseChanged = false;
         m_command.setText(settings.getCommand());
+        m_directory.setText(settings.getDirectory());
+        m_mysubOpts.setText(settings.getMysubOptions());
      }
 
     private void checkConnection() {

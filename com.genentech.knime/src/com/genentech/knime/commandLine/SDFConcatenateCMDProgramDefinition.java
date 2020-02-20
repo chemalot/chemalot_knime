@@ -72,20 +72,20 @@ public class SDFConcatenateCMDProgramDefinition extends InternalCMDProgramDefini
     }
 
     @Override
-    public CommandObject createComamndObject(final String userOptions) {
-        return new SDFConcatenateCmdObject(userOptions, this);
+    public CommandObject createComamndObject(final String userOptions, final String mysubOptions) {
+        return new SDFConcatenateCmdObject(userOptions, mysubOptions, this);
     }
     
     @Override
     public CommandObject createCommandObject(final CommandObject parentCommand,
-            final String userOptions) {
-        return new SDFConcatenateCmdObject(parentCommand, userOptions, this);
+            final String userOptions, final String mysubOptions) {
+        return new SDFConcatenateCmdObject(parentCommand, userOptions, mysubOptions, this);
     }
     
     @Override
     public CommandObject createCommandObject(final List<CommandObject> parentCommands,
-            final String userOptions ) {
-        return new SDFConcatenateCmdObject(parentCommands, userOptions, this);
+            final String userOptions, final String mysubOptions ) {
+        return new SDFConcatenateCmdObject(parentCommands, userOptions, mysubOptions, this);
     }
     
 }

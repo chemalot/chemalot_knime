@@ -37,6 +37,8 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.util.FileUtil;
 
+import com.genentech.knime.Settings;
+
 /**
  * This is the model implementation of "SDF Concatenate" node. 
  * 
@@ -44,7 +46,12 @@ import org.knime.core.util.FileUtil;
  */
 public class SDFConcatenateNodeModel extends AbstractCommandNodeModel {
     
-   /**
+   public static final String KEY_MYSUBOPTS = "mysubOpts";
+   public static final String MYSUBOPTS_DFT = Settings.getMysubOptions();
+   private String  m_mysubOptions = MYSUBOPTS_DFT;
+
+
+/**
     * Constructor for the node model.
     */
    protected SDFConcatenateNodeModel() {
@@ -126,7 +133,7 @@ public class SDFConcatenateNodeModel extends AbstractCommandNodeModel {
            }
        }
        CommandObject command = CommandList.SDF_CONCATENATER.createCommandObject(
-                                                                   commands, "");
+                                                                   commands, "", m_mysubOptions);
        SDFCmdPortObjectSpec outSpec = new SDFCmdPortObjectSpec(
                command, sshConfig);
        return outSpec;
@@ -137,7 +144,7 @@ public class SDFConcatenateNodeModel extends AbstractCommandNodeModel {
     */
    @Override
    protected void saveSettingsTo(final NodeSettingsWO settings) {
-
+      settings.addString(KEY_MYSUBOPTS, m_mysubOptions);
    }
 
    /**
@@ -146,6 +153,7 @@ public class SDFConcatenateNodeModel extends AbstractCommandNodeModel {
    @Override
    protected void loadValidatedSettingsFrom(final NodeSettingsRO settings)
          throws InvalidSettingsException {
+       m_mysubOptions = settings.getString(KEY_MYSUBOPTS, MYSUBOPTS_DFT);
    
    }
 
@@ -155,7 +163,7 @@ public class SDFConcatenateNodeModel extends AbstractCommandNodeModel {
    @Override
    protected void validateSettings(final NodeSettingsRO settings)
          throws InvalidSettingsException {
-   
+	   // no op
    }
 
 }

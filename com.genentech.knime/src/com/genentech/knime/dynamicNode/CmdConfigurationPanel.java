@@ -42,10 +42,12 @@ import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.workflow.FlowVariable;
 
 import com.genentech.knime.commandLine.CMDProgramDefinition;
+import com.genentech.knime.commandLine.KnimeSDFCMDBridgeNodeModel;
+import com.genentech.knime.commandLine.KnimeSDFCMDBridgeSettings;
 
 /**
  * {@link JPanel} for entering command line options by users of command line nodes.
- * 
+ *
  * @author albertgo Genentech
  */
 public class CmdConfigurationPanel extends JPanel {
@@ -55,7 +57,8 @@ public class CmdConfigurationPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    private final JTextArea m_userOptions = new JTextArea(3,50);
+    private final JTextArea m_userOptions  = new JTextArea(3,50);
+    private final JTextField m_mysubOptions = new JTextField(40);
 
     /**
      * Creates a new tab.
@@ -84,6 +87,7 @@ public class CmdConfigurationPanel extends JPanel {
         tmpBox.add(Box.createHorizontalGlue());
         optBox.add(tmpBox);
 
+        //////////////////////////////////////////////////////////////////
         tmpBox = Box.createHorizontalBox();
         tmpBox.add(Box.createRigidArea(five10));
         tmpBox.add(new JLabel("Additional Command Line Options:"));
@@ -111,6 +115,35 @@ public class CmdConfigurationPanel extends JPanel {
         tmpBox.add(userSettings);
         optBox.add(tmpBox);
         
+        //////////////////////////////////////////////////////////////////
+        tmpBox = Box.createHorizontalBox();
+        tmpBox.add(Box.createRigidArea(five10));
+        tmpBox.add(new JLabel("mysub options:"));
+        tmpBox.add(Box.createHorizontalGlue());
+        optBox.add(tmpBox);
+        
+        tmpBox = Box.createHorizontalBox();
+        m_mysubOptions.setBorder(BorderFactory.createEtchedBorder());
+        m_mysubOptions.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        m_mysubOptions.setMaximumSize( m_mysubOptions.getPreferredSize());
+        tmpBox.add(new JScrollPane(m_mysubOptions));
+
+        final FlowVariableModel fvmms = parent.createFlowVariableModel(
+        		new String[]{"cmdConfiguration", "mysubOptions"}, FlowVariable.Type.STRING);
+        @SuppressWarnings("serial")
+        GNEFlowVariableModelButton mysubSettings = new GNEFlowVariableModelButton(parent, fvmms) {
+        	@Override
+        	public void setTextField(String s) {
+        		m_mysubOptions.setText(s);
+        	}
+        	@Override
+        	public void setFieldEditable(boolean bool) {
+        		m_mysubOptions.setEditable(bool);
+        	}
+        };
+        tmpBox.add(mysubSettings);
+        optBox.add(tmpBox);
+        
         // create the panel
         add(optBox);
     }
@@ -122,6 +155,7 @@ public class CmdConfigurationPanel extends JPanel {
      */
     public void loadSettings(final CmdConfiguration configuration) {
         m_userOptions.setText(configuration.getUserOptions());
+        m_mysubOptions.setText(configuration.getMysubOptions());
      }
 
     /**
@@ -132,6 +166,7 @@ public class CmdConfigurationPanel extends JPanel {
      */
     public void saveSettings(final CmdConfiguration settings) {
         settings.setUserOptions(m_userOptions.getText());
+        settings.setMysubOptions(m_mysubOptions.getText());
     }
 
 }

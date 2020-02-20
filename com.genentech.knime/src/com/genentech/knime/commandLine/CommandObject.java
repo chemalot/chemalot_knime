@@ -36,35 +36,39 @@ import java.util.List;
 public class CommandObject {
 
     private final String m_userOptions;
+    private final String m_mysubOptions;
 
     private final CMDProgramDefinition m_progDefinition;
 
     private final List<CommandObject> m_parentCommands;
 
-    CommandObject(final String userOptions,
+    CommandObject(final String userOptions, final String mysubOptions,
             final CMDProgramDefinition progDefintion) {
         if( progDefintion == null ) 
             throw new IllegalArgumentException("Command Object needs program definition");
         m_parentCommands = new ArrayList<CommandObject>();
         m_userOptions = userOptions.replaceAll("[\n\r]" , " ");
+        m_mysubOptions = mysubOptions.replaceAll("[\n\r]" , " ");
         m_progDefinition = progDefintion;
     }
 
     CommandObject(final CommandObject parentCommand,
-            final String userOptions, final CMDProgramDefinition progDefinition) {
-        this(userOptions, progDefinition);
+            final String userOptions, final String mysubOptions,
+            final CMDProgramDefinition progDefinition) {
+        this(userOptions, mysubOptions, progDefinition);
         m_parentCommands.add(parentCommand);
     }
 
     /** For {@see SDFConcatenateNodeModel */
     CommandObject(final List<CommandObject> parentCommands,
-                  final String userOptions, final CMDProgramDefinition progDefintion) {
+            final String userOptions, final String mysubOptions, final CMDProgramDefinition progDefintion) {
 
         if( progDefintion == null ) 
             throw new IllegalArgumentException("Command Object needs program definition");
         
         m_parentCommands = new ArrayList<CommandObject>(parentCommands);
         m_userOptions = userOptions.replaceAll("[\n\r]" , " ");
+        m_mysubOptions = mysubOptions.replaceAll("[\n\r]" , " ");
         m_progDefinition = progDefintion;
     }
 
@@ -72,6 +76,20 @@ public class CommandObject {
         return m_userOptions;
     }
 
+    public String getMysubOptions() {
+        return m_mysubOptions;
+    }
+
+    /** get the mysub options of the first node in a sequence of sdf nodes **/
+    public String getRootMysubOptions() {
+    	CommandObject cmd = this;
+    	while( cmd.m_parentCommands.size() > 0)
+    		cmd = cmd.m_parentCommands.get(0);
+    	
+    	return cmd.m_mysubOptions;	
+    }
+    
+    
     public CMDProgramDefinition getProgramDefintion() {
         return m_progDefinition;
     }

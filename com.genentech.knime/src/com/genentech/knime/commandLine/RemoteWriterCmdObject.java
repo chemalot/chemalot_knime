@@ -32,9 +32,9 @@ import java.util.List;
  */
 public class RemoteWriterCmdObject extends CommandObject {
 
-    RemoteWriterCmdObject(CommandObject parentCommand, String userOptions,
+    RemoteWriterCmdObject(CommandObject parentCommand, String userOptions, String mysubOptions,
             CMDProgramDefinition progDefinition) {
-        super(parentCommand, userOptions, progDefinition);
+        super(parentCommand, userOptions, mysubOptions, progDefinition);
     }
 
     protected String getCSHPipe(boolean newLineAllowed, String indent ) {

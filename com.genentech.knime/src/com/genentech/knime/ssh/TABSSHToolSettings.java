@@ -36,6 +36,7 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.util.KnimeEncryption;
 
+import com.genentech.knime.Settings;
 import com.jcraft.jsch.UserInfo;
 
 /**
@@ -50,13 +51,17 @@ public class TABSSHToolSettings {
 
    /** default port. */
    public static final int DEFAULT_SSH_PORT = 22;
-   private static final String CFG_HOST = "remoteHost";
-   private static final String CFG_PORT = "sshPortNumber";
-   private static final String CFG_USER = "userName";
-   private static final String CFG_PASSWD = "passwd";
-   private static final String CFG_KEY_PASSPHRASE = "keyPassphrase";
-   private static final String CFG_TIMEOUT = "TimeoutSec";
-   private static final String CFG_COMMAND = "remoteCommand";
+   public static final String DEFAULT_MYSUB_OPTS = Settings.getMysubOptions();
+	   
+   public static final String CFG_HOST = "remoteHost";
+   public static final String CFG_PORT = "sshPortNumber";
+   public static final String CFG_USER = "userName";
+   public static final String CFG_PASSWD = "passwd";
+   public static final String CFG_KEY_PASSPHRASE = "keyPassphrase";
+   public static final String CFG_TIMEOUT = "TimeoutSec";
+   public static final String CFG_COMMAND = "remoteCommand";
+   public static final String CFG_MYSUB_OPTS = "mysubOpts";
+   public static final String CFG_DIRECTORY = "directory";
    private String m_remoteHost;
    private int m_portNumber;
    private String m_user;
@@ -64,11 +69,18 @@ public class TABSSHToolSettings {
    private String m_encryptKeyPassphrase;
    private int m_timeout;
    private String m_command;
+   private String m_mysubOptions;
+   private String m_directory;
 
    /**
     * Default constructor with default settings, possibly invalid settings.
     */
-   public TABSSHToolSettings() {
+   public TABSSHToolSettings()
+   {   this(DEFAULT_MYSUB_OPTS);
+   }
+   
+   
+   TABSSHToolSettings(String defaultMysubOpts) {
       m_remoteHost = "";
       m_user = "";
       m_encryptKeyPassphrase = "";
@@ -76,6 +88,8 @@ public class TABSSHToolSettings {
       m_timeout = 0;
       m_portNumber = DEFAULT_SSH_PORT;
       m_command = "";
+      m_mysubOptions = defaultMysubOpts;
+      m_directory = "";
    }
 
    /**
@@ -102,6 +116,8 @@ public class TABSSHToolSettings {
       m_encryptPassword = settings.getString(CFG_PASSWD);
       m_encryptKeyPassphrase = settings.getString(CFG_KEY_PASSPHRASE);
       m_command = settings.getString(CFG_COMMAND);
+      m_mysubOptions = settings.getString(CFG_MYSUB_OPTS, Settings.getMysubOptions());
+      m_directory = settings.getString(CFG_DIRECTORY, "");
    }
 
    public void validateSettings(final NodeSettingsRO settings)
@@ -113,6 +129,8 @@ public class TABSSHToolSettings {
       settings.getString(CFG_PASSWD);
       settings.getString(CFG_KEY_PASSPHRASE);
       settings.getString(CFG_COMMAND);
+      settings.getString(CFG_MYSUB_OPTS, Settings.getMysubOptions());
+      settings.getString(CFG_DIRECTORY, "");
    }
 
    /**
@@ -138,6 +156,8 @@ public class TABSSHToolSettings {
       settings.addString(CFG_PASSWD, m_encryptPassword);
       settings.addString(CFG_KEY_PASSPHRASE, m_encryptKeyPassphrase);
       settings.addString(CFG_COMMAND, m_command);
+      settings.addString(CFG_MYSUB_OPTS, m_mysubOptions);
+      settings.addString(CFG_DIRECTORY, m_directory);
    }
 
    /**
@@ -288,8 +308,7 @@ public class TABSSHToolSettings {
    }
 
    /**
-    * @param command
-    *           the command to set
+    * @param command the command line to set
     */
    public void setCommand(final String command) {
       if (command == null) {
@@ -297,6 +316,35 @@ public class TABSSHToolSettings {
       } else {
          m_command = command;
       }
+   }
+
+   /**
+    * @return the command
+    */
+   public String getDirectory() {
+      return m_directory;
+   }
+
+   /**
+    * @param command the command line to set
+    */
+   public void setDirectory(final String directory) {
+      if (directory == null) {
+         m_directory = "";
+      } else {
+         m_directory = directory;
+      }
+   }
+
+   public void setMysubOptions(String text) {
+	  if (text == null)
+	      m_mysubOptions = "";
+	  else
+    	  m_mysubOptions = text;
+	}
+
+   public String getMysubOptions() {
+	      return m_mysubOptions;
    }
 
    /**
