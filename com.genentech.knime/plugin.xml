@@ -17,20 +17,20 @@
    
    <extension point="org.knime.workbench.repository.nodes">
 
-       <node category-path="/Genentech" factory-class="com.genentech.knime.ssh.TABSSHNodeFactory"/>
+       <node category-path="/community/Genentech" factory-class="com.genentech.knime.ssh.TABSSHNodeFactory"/>
              
-       <node category-path="/Genentech" factory-class="com.genentech.knime.ssh.SDFSSHNodeFactory"/>
+       <node category-path="/community/Genentech" factory-class="com.genentech.knime.ssh.SDFSSHNodeFactory"/>
 
-       <node category-path="/Genentech/GNESdfCmdLine/GNEConverter" 
+       <node category-path="/community/Genentech/GNESdfCmdLine/GNEConverter" 
              factory-class="com.genentech.knime.commandLine.KnimeSDFCMDBridgeNodeFactory"/>
 
-       <node category-path="/Genentech/GNESdfCmdLine/GNEDataManipulation" 
+       <node category-path="/community/Genentech/GNESdfCmdLine/GNEDataManipulation" 
              factory-class="com.genentech.knime.commandLine.SDFConcatenateNodeFactory"/>
 
-       <node category-path="/Genentech/GNESdfCmdLine/GNEConverter" 
+       <node category-path="/community/Genentech/GNESdfCmdLine/GNEConverter" 
              factory-class="com.genentech.knime.commandLine.SDFCmdExecutorNodeFactory"/>
 
-       <node category-path="/Genentech/GNESdfCmdLine/GNEWriter" 
+       <node category-path="/community/Genentech/GNESdfCmdLine/GNEWriter" 
              factory-class="com.genentech.knime.commandLine.SDFCmdRemoteWriterNodeFactory"/>
        <node
              category-path="Genentech"
@@ -57,67 +57,67 @@
             icon="/icons/dna3.png"
             level-id="Genentech"
             name="Genentech"
-            path="/"/>
+            path="/community"/>
 
       <category icon="/icons/dna3.png"
-         level-id="GNESdfCmdLine" name="SDF command Line Tools" path="/Genentech"/>
+         level-id="GNESdfCmdLine" name="SDF command Line Tools" path="/community/Genentech"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEAdvanced" name="Advanced" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEAdvanced" name="Advanced" path="/community/Genentech/GNESdfCmdLine"/>
 
               <category icon="/icons/dna3.png"
-                 level-id="GNEAdvDataManipulation"   name="Data Manipulation"      path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+                 level-id="GNEAdvDataManipulation"   name="Data Manipulation"      path="/community/Genentech/GNESdfCmdLine/GNEAdvanced"/>
          
               <category icon="/icons/dna3.png"
-                 level-id="GNEAdvReader"             name="Reader"                 path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+                 level-id="GNEAdvReader"             name="Reader"                 path="/community/Genentech/GNESdfCmdLine/GNEAdvanced"/>
          
               <category icon="/icons/dna3.png"
-                 level-id="GNEAdvStructManipulation" name="Structure Manipulation" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+                 level-id="GNEAdvStructManipulation" name="Structure Manipulation" path="/community/Genentech/GNESdfCmdLine/GNEAdvanced"/>
          
                   <category icon="/icons/dna3.png"
-                     level-id="GNEAdvProps"          name="Properties" path="/Genentech/GNESdfCmdLine/GNEAdvanced/GNEAdvStructManipulation"/>
+                     level-id="GNEAdvProps"          name="Properties" path="/community/Genentech/GNESdfCmdLine/GNEAdvanced/GNEAdvStructManipulation"/>
          
               <category icon="/icons/dna3.png"
-                 level-id="GNEAdvUtilities"          name="Utilities" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+                 level-id="GNEAdvUtilities"          name="Utilities" path="/community/Genentech/GNESdfCmdLine/GNEAdvanced"/>
          
               <category icon="/icons/dna3.png"
-                 level-id="GNEAdvWriter"             name="Writer" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+                 level-id="GNEAdvWriter"             name="Writer" path="/community/Genentech/GNESdfCmdLine/GNEAdvanced"/>
          
               <category icon="/icons/dna3.png"
-                 level-id="GNERetired"               name="Retired" path="/Genentech/GNESdfCmdLine/GNEAdvanced"/>
+                 level-id="GNERetired"               name="Retired" path="/community/Genentech/GNESdfCmdLine/GNEAdvanced"/>
          
           <category icon="/icons/dna3.png"
-             level-id="GNEConverter" name="Converter" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEConverter" name="Converter" path="/community/Genentech/GNESdfCmdLine"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEDataManipulation" name="Data Manipulation" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEDataManipulation" name="Data Manipulation" path="/community/Genentech/GNESdfCmdLine"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEReader" name="Reader" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEReader" name="Reader" path="/community/Genentech/GNESdfCmdLine"/>
          
           <category icon="/icons/dna3.png"
-             level-id="GNEStructManipulation" name="Structure Manipulation" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEStructManipulation" name="Structure Manipulation" path="/community/Genentech/GNESdfCmdLine"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEStrDiversity" name="Diversity"  path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+             level-id="GNEStrDiversity" name="Diversity"  path="/community/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEStrProps"     name="Properties" path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+             level-id="GNEStrProps"     name="Properties" path="/community/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEStrQSAR" name="QSAR Modeling" path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+             level-id="GNEStrQSAR" name="QSAR Modeling" path="/community/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEStrSearch" name="Search Tools" path="/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
+             level-id="GNEStrSearch" name="Search Tools" path="/community/Genentech/GNESdfCmdLine/GNEStructManipulation"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEUtilities" name="Utilities" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEUtilities" name="Utilities" path="/community/Genentech/GNESdfCmdLine"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEWriter" name="Writer" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEWriter" name="Writer" path="/community/Genentech/GNESdfCmdLine"/>
 
           <category icon="/icons/dna3.png"
-             level-id="GNEUserDefined" name="User Defined" path="/Genentech/GNESdfCmdLine"/>
+             level-id="GNEUserDefined" name="User Defined" path="/community/Genentech/GNESdfCmdLine"/>
 
    </extension>
    <extension

@@ -1,0 +1,506 @@
+<commands>
+<!-- Add new Command Line Nodes to node repository in the KNIME Desktop
+  Edit <chemalot_knime>/config/cmdLine/commandLinePrograms.xml on the local machine
+-->
+
+
+<!-- use disableKnimeUpdateSites=y if you have configured your own composite update site
+     and want to disable the knime default sites in the eclipse preferences for clients -->
+   <config disableKnimeUpdateSites='n'>
+
+   <!-- The exchange directory is ued by the "Knime To SDF Port" node to deposit the file with the data from the 
+        previous node so that it can be accesed from the remote host.
+        The exchangeDir element provides paths to access the exchange directory from the local and the
+        remote host.
+        Multiple exchangeDir elements can be specified to support different local host environments.
+        The first applicable element is used.
+   -->
+   <exchangeDir local='\\data\tmp\knime' remote='/data/smdd/tmp/knime'/>
+
+   <!--
+   <exchangeDir local='smb://data/tmp/knime'  remote='/data/smdd/tmp/knime'/>
+   <exchangeDir local='/Volumes/data/tmp/knime'  remote='/data/smdd/tmp/knime'/>
+   <exchangeDir local='/data/smdd/tmp/knime' remote='/data/smdd/tmp/knime'/>
+   -->
+   <ssh remoteHost='computeHost' timeout='1000' initFileTemplate='.login'/>
+   
+   <!-- Use this element if you would like to record usage of nodes or workflows.
+        loggingURLTemplate is used in the com.genentech.knime.Settings#logUsage()
+        method.
+        This is completly optional.
+   <loggingURLTemplate url='http://logserver.log.com/public/LogService?userName=#uName#&amp;application=#application#&amp;applicationParam=#appParam#&amp;task=#task#&amp;taskParam=#taskParam#&amp;timeUsedms=#timeMs#'/>
+   -->
+</config>
+
+<!--
+   Each <command> element will generate oen command line tool.
+   
+   The subFolders can not be automatcally generated so to add additional folders to
+   the Knime Node tree you have to edit the source code and recompile.
+   
+   Default: lets you specify the default options that the user sees in the config menu
+   of a new node. It is a great way to help users start using a command line node.
+   
+   THe <help> element is used to generate help files that appear in the knime help menu.
+-->
+<command name='AEREAExporter.csh' subfolder='GNEReader'>
+   <IO out="-out .sdf"/>
+   <default>
+      -hitlistLevel 'Base Compound' -uName XXXX -treeName myTree
+      -qName 'XVortex Project IC50' -rName 'XVortex Project Subst' 
+   </default>
+   <ports out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='tab2Sdf.csh' subfolder='GNEReader'>
+   <IO out="-out .sdf"/>
+   <default>
+      -in t.tab
+   </default>
+   <ports out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='babel' label='babel (OE)' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>-add2d</default>
+   <ports in='sdf' out='sdf'/>
+   <help option='--help all'/>
+</command>
+
+<command name='Generic' command="" subfolder='GNEAdvanced/GNEAdvUtilities'>
+   <IO in="" out=""/>
+   <default><![CDATA[
+      perl -pe 's/<__/</'
+   ]]></default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfGrep.pl' subfolder='GNEDataManipulation'>
+   <IO in="" out=""/>
+   <default><![CDATA[
+      -i GNum
+   ]]></default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfMMConfAnalysis.pl' label='sdf MMConf Analysis' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-optH -szybkiOpt -sheffield -sampleOtherMin -nCPU 4"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfMolSeparator.csh' label='sdf Mol Separator' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='cnsMPOWarning.grvy'  subfolder='GNEAdvanced/GNEAdvStructManipulation/GNEAdvProps'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfLE.grvy' subfolder='GNEDataManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>'EC50_[uM]' LE LLE</default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='dataLoader.csh'  subfolder='GNEAdvanced/GNEAdvWriter'>
+   <IO in="" out=""/><!-- with no inputFile and prinToFile args dataloader will stream <arg> -->
+   <default>
+      -runMode checkData -transact rollback
+      -configFile substance/ChemRegister.xml -dataFileType sdf 
+      -errLogFile berlinCorrected.e.sdf -printStackTrace 
+      -pw x -userid berlinm
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='OEProps.csh'  subfolder='GNEAdvanced/GNEAdvStructManipulation/GNEAdvProps'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="all"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdf2HtmlTab.csh' subfolder='GNEAdvanced/GNEAdvWriter'>
+   <IO in="-in .sdf" out=""/><!-- no out option -->
+   <default value=""/>
+   <ports in='sdf' out=''/>
+   <help option='-h'/>
+</command>
+
+<command name='sdf2Xls.csh' subfolder='GNEWriter'>
+   <IO in="-in .sdf" out=""/><!-- out option is an xls file -->
+   <default value="-out outfile.xlsx -tag 'GNumber|TPSA' -imageIdTag Name  -linkImageType t_PatImgByGnum -structHeight 200 -structWidth 200"/>
+   <ports in='sdf' out=''/>
+   <help option='-h'/>
+</command>
+
+<command name='sdf2name.py' subfolder='GNEStructManipulation/GNEStrProps'>
+   <IO in="-i .sdf" out="-o .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdf2Tab.csh' subfolder='GNEWriter'>
+   <IO in="-in .sdf" out=""/><!-- no out option -->
+   <default value="-tags 'SMILES|TITLE|....' > outputFileName.tab (Because TAB f=pipes are not yet supported)"/>
+   <ports in='sdf' out=''/><!-- for now TAB is not supported yet -->
+   <help option='-h'/>
+</command>
+
+<command name='sdfAggregator.csh' subfolder='GNEDataManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-groupby ClusterID -outputmode all -function 'count()' "/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfAlign.pl' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-ref fName.sdf"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfALogP.csh' subfolder='GNEAdvanced/GNEAdvStructManipulation/GNEAdvProps'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-outputCounts"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfBinning.csh' subfolder='GNEDataManipulation'><!-- Problem help file -->
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfCalcProps.csh' subfolder='GNEStructManipulation/GNEStrProps'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="pChem"/>
+   <ports in='sdf' out='sdf'/>
+   <help option=''/>
+</command>
+
+<command name='sdfCFP.csh' subfolder='GNEStructManipulation/GNEStrDiversity'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-level 2 -type atomic"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfCluster.pl' subfolder='GNEStructManipulation/GNEStrDiversity'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-nCpu 4 -radius .3 -- -AAPathSim DEFAULT"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfCNS_MPO.grvy' subfolder='GNEAdvanced/GNEAdvStructManipulation/GNEAdvProps'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfEnumerator.csh' subfolder='GNEStructManipulation'>
+   <IO in="" out="-out .sdf"/>
+   <default>
+      -maxAtoms 35 
+      '([Ag][*:1].[Be][*:2][Ce]).([Ag][*:3]).([Be][*:4]).([Ce][*:5])>>[*:1]-[*:3].[*:2](-[*:4])-[*:5]' 
+      .sdf R1.smi R2.1.smi R3.1.smi
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfEStateCalculator.csh' label='sdf EState Calculator' subfolder='GNEAdvanced/GNEAdvStructManipulation/GNEAdvProps'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-es_count"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfExport.pl' subfolder='GNEReader'>
+   <IO out=""/>
+   <default value="$AESTEL_DIR/config/sdfExport/queries.xml sdfByID -in idNumber.tab"/>
+   <ports out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfFingerprinter.csh' subfolder='GNEStructManipulation/GNEStrDiversity'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-fpType 'linear7*4' -format folded2048"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfFPCluster.pl'  label='sdf FP Cluster'  subfolder='GNEStructManipulation/GNEStrDiversity'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-radius 0.75 -fpTag AFP2"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfFPNNFinder.csh' label='sdf FP NNFinder' subfolder='GNEStructManipulation/GNEStrSearch'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-ref q.fp.sdf -minSimilarity .75 -idTag ID -fpTag AFP2 -nCpu 8"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfFPSphereExclusion.csh' label='sdf FP Sphere Exclusion' subfolder='GNEStructManipulation/GNEStrDiversity'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-radius 0.75 -fpTag AFP2"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfGroovy.csh' subfolder='GNEDataManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>
+      -c 'if( tVal($mol,"IC50_[uM]").length() == 0 ) return false;'
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfMACCSKeys.csh' subfolder='GNEAdvanced/GNEAdvStructManipulation/GNEAdvProps'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfMCSSNNFinder.csh'  label='sdf MCSS NNFinder' subfolder='GNEStructManipulation/GNEStrSearch'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>
+      -ref refFile.sdf
+      -AAPathSim DEFAULT -idTag GNum  -maxNeighbors 20 -minSimilarity .3 -nCpu 4
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfMCSSSphereExclusion.csh'  label='sdf MCSS Sphere Exclusion' subfolder='GNEStructManipulation/GNEStrDiversity'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>
+      -ref refFile.sdf -AAPathSim DEFAULT -radius .3
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfMDLSSSMatcher.csh'  label='sdf MDL SSMatcher' subfolder='GNEStructManipulation/GNEStrSearch'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-ref queries.sdf"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfMultiplexer.pl' subfolder='GNEUtilities'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-nProc 8 -cmd 'omega2 -in .sdf -out .sdf'"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfNormalizer.csh' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfRingSystemExtraction.csh'  label='sdf Ring System Extraction' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfRMSDSphereExclusion.csh' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-mirror -radius .3 -printAll"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfRGroupExtractor.pl' subfolder='GNEStructManipulation/GNEStrQSAR'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-rgOutFormat sdf -smirksFile transforms.smirks"/>
+   <ports in='sdf' out='sdf'/>
+   <help option=''/>
+</command>
+
+<command name='sdfRGroupCalcProps.pl' subfolder='GNEStructManipulation/GNEStrQSAR'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-propColPrefix R1 -smiCol 'U1 SMILES' MW"/>
+   <ports in='sdf' out='sdf'/>
+   <help option=''/>
+</command>
+
+<command name='sdfRModelPredictor.pl' label='sdf R Model Predictor' subfolder='GNEStructManipulation/GNEStrQSAR'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>
+      -modelLocation RModelTest/RFModel
+      -modelName RFModel
+      -NNSimAbove 0.75
+      -NNFieldPrefix myModel
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfRRandomForestCreator.pl' label='sdf R RandomForest Creator' subfolder='GNEStructManipulation/GNEStrQSAR'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>
+       -modelLocation RModelTest/RFModel
+      -modelName RFModel
+      -responseField measured_CL -descriptorFields "cLogP|MW" 
+      -predictionColName "c_CL" -identifierField G 
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfRSVMCreator.pl' label='sdf R SVM Creator' subfolder='GNEStructManipulation/GNEStrQSAR'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default>
+       -modelLocation RModelTest/RFModel
+      -modelName SVMModel
+      -responseField measured_CL -descriptorFields "cLogP|MW" 
+      -predictionColName "c_CL" -identifierField G 
+   </default>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSdfExport.csh' subfolder='GNEDataManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSdfMerger.csh' subfolder='GNEDataManipulation'>
+   <IO in="-master .sdf" out="-out .sdf"/>
+   <default value="-second second.sdf -masterTag GNum -secondTag GNumber"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSelectivityCalculator.csh'  label='sdf Selectivity Calculator' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSliceByRe.pl' subfolder='GNEDataManipulation'>
+   <IO in="" out=""/>
+   <default value="-after regEx"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSmartsGrep.csh' subfolder='GNEStructManipulation/GNEStrSearch'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-v CCO"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSorter.csh' subfolder='GNEDataManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-sortTag GNumber -desc -numeric -sortTag IC50"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSplicer.csh' subfolder='GNEDataManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-start 100 -count 10"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfStructureTagger.csh' label='sdf Structure Tagger' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-sets MySeriesName -smarts MyProjectSmarts.tab -tag_info firstTag"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfSubRMSD.csh' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-fragFile frag.sdf"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfTabMerger.csh' subfolder='GNEDataManipulation'>
+   <IO in="-sdf .sdf" out="-out .sdf"/>
+   <default value="-tab tabFile.tab -mergeTag 'GNum' -mergeCol 'G-Number'"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfTagTool.csh' subfolder='GNEDataManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfTopologicalIndexer.csh' subfolder='GNEStructManipulation/GNEStrProps'>
+   <IO in=".sdf" out=".sdf"/>
+   <default value="all"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfConformerSampler.csh' subfolder='GNEAdvanced/GNEAdvStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-maxConfs 20"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='sdfTransformer.csh' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value="-makeHImplicit -trans '[Oh1:1][C:2]=[C:3][C:4]=[O:5]>>[Oh0:1]=[C:2]-[C:3]([H])[C:4]=[O:5]'"/>
+   <ports in='sdf' out='sdf'/>
+   <help option='-h'/>
+</command>
+
+<command name='omega2' label='omega2 (OE)' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='--help all'/>
+</command>
+
+<command name='szybki' label='szybki (OE)' subfolder='GNEStructManipulation'>
+   <IO in="-in .sdf" out="-out .sdf"/>
+   <default value=""/>
+   <ports in='sdf' out='sdf'/>
+   <help option='--help all'/>
+</command>
+
+</commands>
