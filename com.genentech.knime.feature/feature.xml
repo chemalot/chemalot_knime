@@ -6,7 +6,9 @@
       provider-name="GENENTECH">
 
    <description url="http://www.gene.com/">
-      Genentech Knime Nodes Feature
+      Genentech Knime Nodes Feature.
+
+For more information visit: https://github.com/chemalot/chemalot_knime
    </description>
 
    <copyright url="http://www.gene.com/">
