@@ -2,7 +2,7 @@
 <feature
       id="com.genentech.knime.feature"
       label="Genentech Knime Features"
-      version="1.0.42"
+      version="1.0.42.qualifier"
       provider-name="GENENTECH">
 
    <description url="http://www.gene.com/">

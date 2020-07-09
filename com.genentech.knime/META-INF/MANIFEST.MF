@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Genentech extensions for KNIME Workbench
 Bundle-SymbolicName: com.genentech.knime;singleton:=true
-Bundle-Version: 1.0.42
+Bundle-Version: 1.0.42.qualifier
 Bundle-ClassPath: knimeGenes.jar,
  libs/jdom.jar
 Bundle-Activator: com.genentech.knime.GNENodeActivator

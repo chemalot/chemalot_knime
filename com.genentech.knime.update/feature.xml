@@ -2,7 +2,7 @@
 <feature
       id="com.genentech.knime.update"
       label="Genentech Update Feature"
-      version="1.0.42"
+      version="1.0.42.qualifier"
       provider-name="GENENTECH">
 
    <includes
