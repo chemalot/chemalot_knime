@@ -33,7 +33,7 @@
        <node category-path="/community/Genentech/GNESdfCmdLine/GNEWriter" 
              factory-class="com.genentech.knime.commandLine.SDFCmdRemoteWriterNodeFactory"/>
        <node
-             category-path="Genentech"
+             category-path="/community/Genentech"
              factory-class="com.genentech.knime.settings.GNESettingsNodeFactory">
        </node>
 
