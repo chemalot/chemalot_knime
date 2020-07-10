@@ -47,7 +47,7 @@ public class GeneratorCmdSdfNodeSetFactory extends AbstractCmdSdfNodeSetFactory 
     /** {@inheritDoc} */
     @Override
     public String getCategoryPathRoot(final String id) {
-        return "/Genentech/GNESdfCmdLine";
+        return "/community/Genentech/GNESdfCmdLine";
     }
 
     /** {@inheritDoc} */

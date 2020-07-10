@@ -59,7 +59,7 @@ public class CommandList {
         SDF_KNIME_BRIDGE  = createKnimeBridge();
         SDF_REMOTE_WRITER = createRemoteWriter();
         
-        DEFAULT = new CommandList(Settings.CMD_CONFIG_FILE_PATH);
+        DEFAULT = new CommandList(Settings.getCMD_CONFIG_FILE_PATH());
     }
     
     @SuppressWarnings("unchecked")
